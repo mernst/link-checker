@@ -7,6 +7,14 @@ on:
   pull_request: {}
 
 jobs:
+  test_persistent_errors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install Python style checkers
+        run: pip3 install black pylint
+      - name: run checklink-persistent-errors tests
+        working-directory: tests/checklink-persistent-errors-tests
+        run: make
   test:
     runs-on: ubuntu-latest
     steps:

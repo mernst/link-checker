@@ -1,0 +1,173 @@
+#! /usr/bin/env python3
+# Requires Python 3.6 or later because of use of f-strings.
+
+r"""This script allows you to ignore transient errors in checklink output.
+Run it like this:
+  checklink-persistent-errors BASENAME N
+BASENAME is a prefix for files containing the output of the checklink program.
+N is an integer; this program will read that many of the most recent files.
+
+The checklink program checks for broken links.  It is a hassle when
+checklink reports a broken link that is really due to network problems or
+server downtime.  This program takes the output of multiple runs of
+checklink, and it only reports the errors that appear in all of them.
+
+For example, you might put in your crontab file:
+  pl=/homes/gws/mernst/bin/src/plume-lib
+  00 20 * * *	$pl/bin/checklink -q -r `grep -v '^#' $pl/bin/checklink-args.txt` http://www.cs.washington.edu/education/courses/cse140/13wi/ > /scratch/mernst/checklink-output/140.txt-`date +\%Y\%m\%d` 2>&1
+  59 20 * * *	$pl/bin/checklink-persistent-errors /scratch/mernst/checklink-output/140.txt 2
+where the first job runs checklink every day, saving the output to a file,
+and the second job reports all errors that are in the two most recent files.
+"""
+
+# This script could optionally delete older output files.
+# But, they are small and there is no harm in keeping them around indefinitely.
+
+import glob
+import os
+import re
+import sys
+
+# For debugging
+# import pprint
+# PP = pprint.PrettyPrinter()
+
+DEBUG_PARSING = False
+DEBUG_PRINTING = False
+DEBUG_INTERSECTION = False
+# For debugging
+# DEBUG_PARSING = True
+# DEBUG_PRINTING = True
+# DEBUG_INTERSECTION = True
+
+
+def nonesorter(a):
+    """Maps None to the empty string, for sorting."""
+    if not a:
+        return ""
+    return a
+
+
+def main():
+    """Main routine for checklink-persistent-errors.
+    Takes 2 arguments, a basename and a number of files to read."""
+
+    if len(sys.argv) != 3:
+        print(f"{sys.argv[0]} requires exactly 2 arguments, got {len(sys.argv) - 1}")
+        sys.exit(1)
+    basename = sys.argv[1]
+    instances = int(sys.argv[2])
+
+    files = glob.glob(basename + "*")
+    if len(files) < instances:
+        sys.exit(0)
+
+    # Sort by file time
+    files.sort(key=lambda x: os.stat(x).st_mtime)
+
+    # results is a list of maps
+    results = []
+    for i in range(0, instances):
+        this_file = files[-(i + 1)]
+        results.append(parse_checklink_output_file(this_file))
+
+    urls = set(results[0].keys())
+    debug_print(DEBUG_INTERSECTION, f"initial urls = {urls}")
+    for result in results:
+        debug_print(DEBUG_INTERSECTION, f"merging in {set(result.keys())}")
+        urls = urls & set(result.keys())
+        debug_print(DEBUG_INTERSECTION, f"intersection (new urls) = {urls}")
+
+    for url in sorted(urls, key=nonesorter):
+        debug_print(DEBUG_PRINTING, f"processing URL: {url}")
+        persistent = results[0][url]
+        debug_print(DEBUG_PRINTING, f"initial persistent = {persistent}")
+        for result in results:
+            # debug_print(DEBUG_PRINTING, f"result = {result}")
+            debug_print(DEBUG_PRINTING, f"result[url] = {result[url]}")
+            persistent = [x for x in persistent if x in result[url]]
+            debug_print(DEBUG_PRINTING, f"persistent at end of loop = {persistent}")
+        debug_print(DEBUG_PRINTING, f"final persistent = {persistent}")
+        if persistent:  # equivalent to "if len(persistent > 0)"
+            print("")
+            print("----------------------------------------")
+            if url:
+                print("")
+                print(url)
+            # It's not worth outputting "List of broken links and other issues:"
+            for report in persistent:
+                print("")
+                print(report)
+
+
+def paragraphs(fileobj, separator="\n"):
+    """Yield each paragraph from fileobj, one by one."""
+    if separator[-1:] != "\n":
+        separator += "\n"
+    paragraph = []
+    for line in fileobj:
+        if line == separator:
+            if paragraph:
+                yield "".join(paragraph)
+                paragraph = []
+        else:
+            paragraph.append(line)
+    if paragraph:
+        yield "".join(paragraph)
+
+
+LISTOF1 = "\nList of broken links and other issues:\n"
+LISTOF2 = "\nList of redirects\n"
+
+
+def parse_checklink_output_file(checklink_output_file):
+    "Returns a map from URLs to list of problem reports for the URL"
+    debug_print(DEBUG_PARSING, f"parse_checklink_output_file({checklink_output_file})")
+    result = {}
+    url = None
+    with open(checklink_output_file, "r") as file:
+        for para in file.read().split("\n\n"):  # paragraphs
+            debug_print(DEBUG_PARSING, f"url = {url}, paragraph = <<<{para}>>>")
+            if re.match("\n?Processing\t", para):
+                url = para
+                continue
+            if para in (
+                "----------------------------------------",
+                # for very first record
+                "\n----------------------------------------",
+                # for empty file
+                "",
+            ):
+                url = None
+                continue
+            if para.startswith(LISTOF1):
+                para = para[len(LISTOF1) :]
+            if para.startswith(LISTOF2):
+                para = para[len(LISTOF2) :]
+            if para.endswith("\n"):
+                para = para[:-1]
+            debug_print(DEBUG_PARSING, f"Cleaned-up paragraph: <<<{para}>>>")
+            ## This occurs if checklink prints an error before the first URL.
+            # if url is None:
+            #     print("bad url None for <<<%s>>>" % para)
+            if url not in result:
+                result[url] = []
+            debug_print(DEBUG_PARSING, f"adding to result[{url}]: <<<{para}>>>")
+            result[url].append(para)
+            debug_print(DEBUG_PARSING, f"result = {result}")
+
+    debug_print(
+        DEBUG_PARSING,
+        f"parse_checklink_output_file({checklink_output_file}) => {result}",
+    )
+
+    return result
+
+
+def debug_print(boolean, string):
+    """Print the string if the first argument is True."""
+    if boolean:
+        print(string)
+
+
+main()

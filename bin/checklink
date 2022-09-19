@@ -21,6 +21,8 @@
 
 use strict;
 use 5.008;
+use English;
+$WARNING = 1;
 
 # Get rid of potentially unsafe and unneeded environment variables.
 delete(@ENV{qw(IFS CDPATH ENV BASH_ENV)});
@@ -43,7 +45,7 @@ use LWP::UserAgent qw();
 use Net::HTTP::Methods 5.833 qw();    # >= 5.833 for 4kB cookies (#6678)
 
 # if 0, ignore robots exclusion (useful for testing)
-use constant USE_ROBOT_UA => 1;
+use constant USE_ROBOT_UA => 0;
 
 if (USE_ROBOT_UA) {
     @W3C::UserAgent::ISA = qw(LWP::RobotUA);
@@ -219,6 +221,7 @@ use CSS::DOM::Constants qw(:rule);
 use CSS::DOM::Style qw();
 use CSS::DOM::Util qw();
 use Encode qw();
+use File::Basename;
 use HTML::Entities qw();
 use HTML::Parser 3.40 qw();    # >= 3.40 for utf8_mode()
 use HTTP::Headers::Util qw();
@@ -1276,6 +1279,16 @@ EOF
                 $nlink =~ s|^\Q$Opts{Masquerade_From}\E|$Opts{Masquerade_To}|;
                 $abs_link_uri = URI->new($nlink);
             }
+        }
+
+        if ($abs_link_uri eq "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd") {
+          $abs_link_uri = URI->new("file://" . dirname(__FILE__) . "/../etc/xhtml1-transitional.dtd");
+        }
+        if ($abs_link_uri eq "http://www.w3.org/TR/html4/frameset.dtd") {
+          $abs_link_uri = URI->new("file://" . dirname(__FILE__) . "/../etc/frameset.dtd");
+        }
+        if ($abs_link_uri eq "http://www.w3.org/TR/REC-html40/loose.dtd") {
+          $abs_link_uri = URI->new("file://" . dirname(__FILE__) . "/../etc/loose.dtd");
         }
 
         my $canon_uri = URI->new($abs_link_uri->canonical());
