@@ -48,7 +48,7 @@ use Net::HTTP::Methods 5.833 qw();    # >= 5.833 for 4kB cookies (#6678)
 use constant USE_ROBOT_UA => 0;
 
 if (USE_ROBOT_UA) {
-    @W3C::UserAgent::ISA = qw(LWP::RobotUA);
+    @W3C::UserAgent::ISA = qw(LWP::UserAgent);
 }
 else {
     @W3C::UserAgent::ISA = qw(LWP::UserAgent);
