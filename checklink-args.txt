@@ -225,7 +225,6 @@
 # End of 500 special cases
 
 ## General 500 section
---suppress-broken 500:https://savannah.nongnu.org/projects/dtrt-indent/
 --suppress-broken 500:http://cgi.di.uoa.gr/~mema/courses/m131/reviews.pdf
 --suppress-broken 500:http://clang.llvm.org/docs/ThreadSafetyAnalysis.html
 --suppress-broken 500:http://fivethirtyeight.blogs.nytimes.com/methodology/
@@ -253,7 +252,7 @@
 --suppress-broken 500:http://www.selenic.com/hg/help/merge-tools
 --suppress-broken 500:http://www.selenic.com/mercurial/hgrc.5.html
 --suppress-broken 500:http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd
---suppress-broken 500:https://2016.splashcon.org/track/splash-2016-oopsla     
+--suppress-broken 500:https://2016.splashcon.org/track/splash-2016-oopsla
 --suppress-broken 500:https://ant.apache.org/
 --suppress-broken 500:https://api.travis-ci.org/randoop/randoop.svg?branch=master
 --suppress-broken 500:https://asm.ow2.io/
@@ -285,7 +284,7 @@
 --suppress-broken 500:https://ece.uwaterloo.ca/~wdietl/inference/
 --suppress-broken 500:https://ece.uwaterloo.ca/~wdietl/ownership/
 --suppress-broken 500:https://ecoop08.cs.ucy.ac.cy/
---suppress-broken 500:https://elpa.gnu.org/   
+--suppress-broken 500:https://elpa.gnu.org/
 --suppress-broken 500:https://en.wikibooks.org/wiki/F_Sharp_Programming/Units_of_Measure
 --suppress-broken 500:https://en.wikipedia.org/wiki/Comma-separated_values
 --suppress-broken 500:https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)
@@ -303,7 +302,7 @@
 --suppress-broken 500:https://fbinfer.com/
 --suppress-broken 500:https://fbinfer.com/docs/next/checker-eradicate/
 --suppress-broken 500:https://gnuvola.org/software/edb/
---suppress-broken 500:https://gnuvola.org/software/edb/       
+--suppress-broken 500:https://gnuvola.org/software/edb/
 --suppress-broken 500:https://groups.csail.mit.edu/pag/cert/
 --suppress-broken 500:https://groups.inf.ed.ac.uk/cup/comment-locator/
 --suppress-broken 500:https://hkn.mit.edu/
@@ -322,7 +321,7 @@
 --suppress-broken 500:https://link.springer.com/chapter/10.1007/978-3-642-16612-9_1
 --suppress-broken 500:https://manu.sridharan.net/
 --suppress-broken 500:https://maven.apache.org/
---suppress-broken 500:https://melpa.org/     
+--suppress-broken 500:https://melpa.org/
 --suppress-broken 500:https://mercurial-scm.org/
 --suppress-broken 500:https://mir.cs.illinois.edu/~marinov/
 --suppress-broken 500:https://muse.engineering.illinois.edu/files/2017/08/10-Salient-Practices-for-UG-Research-Mentors.pdf
@@ -339,6 +338,8 @@
 --suppress-broken 500:https://researcher.watson.ibm.com/researcher/view.php?person=us-dolby
 --suppress-broken 500:https://ricken.us/research/laptjavac/
 --suppress-broken 500:https://ricken.us/research/xajavac/
+--suppress-broken 500:https://savannah.nongnu.org/projects/dtrt-indent/
+--suppress-broken 500:https://se.ethz.ch/~meyer/publications/teaching/compiler-errors.pdf
 --suppress-broken 500:https://semver.org/
 --suppress-broken 500:https://shuttleexpress.com/seattle-seatac-airport-transportation/
 --suppress-broken 500:https://shuttleexpress.com/seattle/airport/scheduled-hotel-service-to-seatac/
@@ -358,7 +359,7 @@
 --suppress-broken 500:https://user.it.uu.se/~johos902/
 --suppress-broken 500:https://users.elis.ugent.be/aadebug2003/
 --suppress-broken 500:https://users.elis.ugent.be/~brdsutte/
---suppress-broken 500:https://uwaterloo.ca/electrical-computer-engineering/   
+--suppress-broken 500:https://uwaterloo.ca/electrical-computer-engineering/
 --suppress-broken 500:https://valgrind.org/
 --suppress-broken 500:https://valgrind.org/downloads/current.html
 --suppress-broken 500:https://vegofwa.org/
@@ -390,6 +391,7 @@
 --suppress-broken 500:https://www.cs.washington.edu/internal/
 --suppress-broken 500:https://www.cs.washington.edu/internal/calendars/
 --suppress-broken 500:https://www.csail.mit.edu/
+--suppress-broken 500:https://www.dcs.gla.ac.uk/research/mungo/index.html
 --suppress-broken 500:https://www.dericpang.com/
 --suppress-broken 500:https://www.dwheeler.com/sloccount/
 --suppress-broken 500:https://www.eecs.mit.edu/
@@ -416,10 +418,10 @@
 --suppress-broken 500:https://www.pm.inf.ethz.ch/people/personal/pmueller-pers.html
 --suppress-broken 500:https://www.portlandjugglers.org/
 --suppress-broken 500:https://www.scientificamerican.com/
---suppress-broken 500:https://www.se.cs.uni-saarland.de/conferences/ASE/ase2005/index.html   
---suppress-broken 500:https://www.se.cs.uni-saarland.de/conferences/ASE/ase2006/index.html   
+--suppress-broken 500:https://www.se.cs.uni-saarland.de/conferences/ASE/ase2005/index.html
+--suppress-broken 500:https://www.se.cs.uni-saarland.de/conferences/ASE/ase2006/index.html
 --suppress-broken 500:https://www.seattleweekly.com/
---suppress-broken 500:https://www.st.cs.uni-saarland.de/paste/       
+--suppress-broken 500:https://www.st.cs.uni-saarland.de/paste/
 --suppress-broken 500:https://www.st.cs.uni-saarland.de/publications/files/schuler-issta-2009.pdf
 --suppress-broken 500:https://www.st.cs.uni-saarland.de/zeller/
 --suppress-broken 500:https://www.valgrind.org/
@@ -473,6 +475,7 @@
 --suppress-fragment https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.3.2
 --suppress-fragment https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.3.3
 --suppress-fragment https://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
+--suppress-fragment https://github.com/diffplug/spotless/tree/main/plugin-gradle#formatAnnotations
 --suppress-fragment https://github.com/google/google-java-format#using-the-formatter
 --suppress-fragment https://github.com/kelloggm/checkerframework-gradle-plugin#incompatibility-with-error-prone
 --suppress-fragment https://github.com/rjust/defects4j#requirements
